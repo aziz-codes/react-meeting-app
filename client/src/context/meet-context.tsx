@@ -23,6 +23,9 @@ export const AppContextProvider = ({
 
     // get user stream
     useEffect(()=>{
+        if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
+          }
         navigator.mediaDevices
          .getUserMedia({ audio: audio, video: video })
          .then((mediaStream) => {
@@ -30,10 +33,10 @@ export const AppContextProvider = ({
           })
          .catch((error) => {
             console.error("Error getting user media", error);
+            setStream(null)
           });
       
-    },[])
-
+    },[audio,video])
 
   const values = {
     video,
