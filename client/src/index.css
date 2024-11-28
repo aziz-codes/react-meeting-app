@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.video-mirror {
+    transform: scaleX(-1); /* Flip horizontally */
+    -webkit-transform: scaleX(-1); /* Ensure compatibility with older browsers */
+    transform-origin: center; /* Keep the flipping centered */
+  }

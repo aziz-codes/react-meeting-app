@@ -10,7 +10,7 @@ const VideoPlayer = () => {
        }
     },[stream]);
   return (
-    <video ref={videoRef} muted autoPlay className='h-96 w-full rounded-md object-cover'></video>
+    <video ref={videoRef} muted autoPlay className='h-full w-full rounded-md object-cover video-mirror'></video>
   )
 }
 

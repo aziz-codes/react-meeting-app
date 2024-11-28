@@ -1,6 +1,16 @@
-import { Video, Mic, ScreenShare, MessageCircle, User, Send, X } from 'lucide-react';
+import {
+  Video,
+  Mic,
+  ScreenShare,
+  User,
+  Send,
+  X,
+} from "lucide-react";
+import { useStore } from "../context/meet-context";
+import VideoPlayer from "../components/video-player";
 
 export default function MeetingRoom() {
+  const {stream} = useStore();
   return (
     <div className="h-screen w-full bg-gray-900 text-gray-200 flex flex-col overflow-x-hidden">
       {/* Header */}
@@ -19,7 +29,7 @@ export default function MeetingRoom() {
             {/* Screen Sharing or Participant Videos */}
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-gray-600 rounded-md flex items-center justify-center text-gray-300">
-                <p>Participant 1 (You)</p>
+                 <VideoPlayer />
               </div>
               <div className="bg-gray-600 rounded-md flex items-center justify-center text-gray-300">
                 <p>Participant 2</p>
@@ -57,7 +67,10 @@ export default function MeetingRoom() {
                 placeholder="Type a message..."
                 className="flex-1 px-3 py-2 rounded-l-md bg-gray-600 text-gray-300 placeholder-gray-400 focus:outline-none"
               />
-              <button type="submit" className="bg-blue-600 px-4 py-2 rounded-r-md hover:bg-blue-500">
+              <button
+                type="submit"
+                className="bg-blue-600 px-4 py-2 rounded-r-md hover:bg-blue-500"
+              >
                 <Send className="w-5 h-5 text-gray-200" />
               </button>
             </form>
