@@ -9,5 +9,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "This will handle all incoming requests and responses and will emit socket events"
+  "description": "This will handle all incoming requests and responses and will emit socket events",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.0.3"
+  }
 }
