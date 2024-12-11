@@ -9,16 +9,31 @@ export default function MeetingRoom() {
   const { id } = useParams();
 
   const [users, setUsers] = useState([]);
-  const { socket, me, peers, stream, audio, setVideo } = useStore();
+  const {
+    socket,
+    me,
+    peers,
+    stream,
+    audio,
+    setVideo,
+    video,
+    shareScreen,
+    screenSharingId,
+    setRoomId,
+  } = useStore();
 
   useEffect(() => {
     if (me && id) {
       socket.emit("join-room", { roomId: id, peerId: me._id });
-      console.log(`id  is ${id}`);
-      console.log(`peer Id  is ${me._id}`);
     }
   }, [id, me, socket]);
-  console.log("peers", peers);
+  useEffect(() => {
+    setRoomId(id);
+  }, [id]);
+  const screenSharingVideo =
+    screenSharingId === me?.id ? stream : peers[screenSharingId]?.stream;
+  const { [screenSharingId]: sharing, ...peersToShow } = peers;
+  console.log(peers);
   return (
     <div className="h-screen w-full bg-gray-900 text-gray-200 flex flex-col overflow-x-hidden">
       {/* Header */}
@@ -37,12 +52,24 @@ export default function MeetingRoom() {
             {/* Screen Sharing or Participant Videos */}
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-gray-600 rounded-md flex items-center justify-center text-gray-300">
-                <VideoPlayer stream={stream} />
+                {video ? (
+                  screenSharingVideo && (
+                    <VideoPlayer stream={screenSharingVideo} />
+                  )
+                ) : (
+                  <div className="h-32 w-32 rounded-full flex justify-center items-center border">
+                    <h4 className="text-6xl font-bold ">A</h4>
+                  </div>
+                )}
               </div>
               <div className="bg-gray-600 rounded-md flex items-center justify-center text-gray-300">
-                {Object.values(peers).map((peer: any) => (
-                  <VideoPlayer key={peer._id} stream={peer.stream} />
-                ))}
+                {peers ? (
+                  Object.values(peersToShow as PeerState).map((peer, index) => (
+                    <VideoPlayer key={index} stream={peer.stream} />
+                  ))
+                ) : (
+                  <h4>No one has joined now</h4>
+                )}
               </div>
             </div>
           </div>
@@ -101,7 +128,10 @@ export default function MeetingRoom() {
           <Mic className="w-5 h-5 text-green-500" />
           <span>Mic</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600">
+        <button
+          className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600"
+          onClick={shareScreen}
+        >
           <ScreenShare className="w-5 h-5 text-blue-500" />
           <span>Share Screen</span>
         </button>
