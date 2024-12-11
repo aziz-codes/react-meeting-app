@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useStore } from "../context/meet-context";
 
 const VideoPlayer = ({ stream }: { stream: MediaStream }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
